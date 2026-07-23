@@ -23,6 +23,8 @@
                 <div class="flex items-center gap-4 text-sm text-[#EDEDEC] flex-wrap">
                     <a href="{{ route('dashboard') }}" class="hover:text-[#d7e600] transition-colors">Dashboard</a>
                     <a href="{{ route('products.index') }}" class="hover:text-[#d7e600] transition-colors">Produkty</a>
+                    <a href="{{ route('categories.index') }}" class="hover:text-[#d7e600] transition-colors">Kategórie</a>
+                    <a href="{{ route('brands.index') }}" class="hover:text-[#d7e600] transition-colors">Značky</a>
                     <a href="{{ route('warehouses.index') }}" class="hover:text-[#d7e600] transition-colors">Sklady</a>
                     <a href="{{ route('stock-movements.index') }}" class="hover:text-[#d7e600] transition-colors">Pohyby</a>
                     <a href="{{ route('orders.index') }}" class="hover:text-[#d7e600] transition-colors">Objednávky</a>
@@ -30,6 +32,9 @@
                     <a href="{{ route('price-lists.index') }}" class="hover:text-[#d7e600] transition-colors">Cenníky</a>
                     <a href="{{ route('discounts.index') }}" class="hover:text-[#d7e600] transition-colors">Zľavy</a>
                     <a href="{{ route('coupons.index') }}" class="hover:text-[#d7e600] transition-colors">Kupóny</a>
+                    @if (auth()->user()->isAdmin())
+                        <a href="{{ route('users.index') }}" class="hover:text-[#d7e600] transition-colors">Používatelia</a>
+                    @endif
 
                     <span>{{ auth()->user()->name }} <span class="text-[#d7e600]">({{ auth()->user()->role->value }})</span></span>
 

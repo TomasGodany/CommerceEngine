@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAddressController;
 use App\Http\Controllers\CustomerController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\PriceListItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +35,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin,manager')->group(function () {
         Route::resource('products', ProductController::class)->except(['show']);
+        Route::resource('categories', CategoryController::class)->except(['show']);
+        Route::resource('brands', BrandController::class)->except(['show']);
         Route::resource('warehouses', WarehouseController::class)->except(['show']);
         Route::resource('stock-movements', StockMovementController::class)->only(['index', 'create', 'store']);
 
@@ -48,5 +53,9 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('discounts', DiscountController::class)->except(['show']);
         Route::resource('coupons', CouponController::class)->except(['show']);
+    });
+
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('users', UserController::class)->only(['index', 'edit', 'update']);
     });
 });

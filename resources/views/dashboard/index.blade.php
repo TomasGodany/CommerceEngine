@@ -7,20 +7,27 @@
             <p class="text-2xl font-semibold">{{ $productsCount }}</p>
         </a>
 
-        <div class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600]">
+        <a href="{{ route('categories.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
             <p class="text-sm opacity-70">Kategórie</p>
             <p class="text-2xl font-semibold">{{ $categoriesCount }}</p>
-        </div>
+        </a>
 
-        <div class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600]">
+        <a href="{{ route('brands.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
             <p class="text-sm opacity-70">Značky</p>
             <p class="text-2xl font-semibold">{{ $brandsCount }}</p>
-        </div>
+        </a>
 
-        <div class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600]">
-            <p class="text-sm opacity-70">Používatelia</p>
-            <p class="text-2xl font-semibold">{{ $usersCount }}</p>
-        </div>
+        @if (auth()->user()->isAdmin())
+            <a href="{{ route('users.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
+                <p class="text-sm opacity-70">Používatelia</p>
+                <p class="text-2xl font-semibold">{{ $usersCount }}</p>
+            </a>
+        @else
+            <div class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600]">
+                <p class="text-sm opacity-70">Používatelia</p>
+                <p class="text-2xl font-semibold">{{ $usersCount }}</p>
+            </div>
+        @endif
 
         <a href="{{ route('warehouses.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
             <p class="text-sm opacity-70">Sklady</p>
