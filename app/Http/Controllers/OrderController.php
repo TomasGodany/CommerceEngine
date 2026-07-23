@@ -90,7 +90,7 @@ class OrderController extends Controller
     public function show(Order $order): View
     {
         return view('orders.show', [
-            'order' => $order->load(['customer', 'items.product', 'statusHistories.user']),
+            'order' => $order->load(['customer', 'items.product', 'statusHistories.user', 'documents']),
             'statuses' => OrderStatus::cases(),
         ]);
     }

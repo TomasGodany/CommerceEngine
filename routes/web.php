@@ -8,11 +8,13 @@ use App\Http\Controllers\CustomerAddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\PriceListItemController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductLabelController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
@@ -53,6 +55,10 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('discounts', DiscountController::class)->except(['show']);
         Route::resource('coupons', CouponController::class)->except(['show']);
+
+        Route::resource('documents', DocumentController::class)->only(['index', 'show', 'destroy']);
+        Route::post('orders/{order}/documents', [DocumentController::class, 'store'])->name('orders.documents.store');
+        Route::get('products/{product}/label', [ProductLabelController::class, 'show'])->name('products.label');
     });
 
     Route::middleware('role:admin')->group(function () {

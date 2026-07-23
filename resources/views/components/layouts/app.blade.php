@@ -32,6 +32,7 @@
                     <a href="{{ route('price-lists.index') }}" class="hover:text-[#d7e600] transition-colors">Cenníky</a>
                     <a href="{{ route('discounts.index') }}" class="hover:text-[#d7e600] transition-colors">Zľavy</a>
                     <a href="{{ route('coupons.index') }}" class="hover:text-[#d7e600] transition-colors">Kupóny</a>
+                    <a href="{{ route('documents.index') }}" class="hover:text-[#d7e600] transition-colors">Dokumenty</a>
                     @if (auth()->user()->isAdmin())
                         <a href="{{ route('users.index') }}" class="hover:text-[#d7e600] transition-colors">Používatelia</a>
                     @endif

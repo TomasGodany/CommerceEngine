@@ -12,6 +12,9 @@
                 Uložiť zmeny
             </button>
             <a href="{{ route('products.index') }}" class="text-sm text-[#EDEDEC] opacity-70 hover:opacity-100">Zrušiť</a>
+            <a href="{{ route('products.label', $product) }}" target="_blank" class="ml-auto rounded border border-[#3a3a3a] text-[#EDEDEC] px-4 py-2 hover:bg-[#2a2a2a] transition-colors">
+                Vytlačiť štítok
+            </a>
         </div>
     </form>
 </x-layouts.app>

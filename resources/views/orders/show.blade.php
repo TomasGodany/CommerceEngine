@@ -91,6 +91,71 @@
                 </table>
             </div>
 
+            <div class="rounded-lg border border-[#2e2e2e] bg-[#1c1c1c] p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-semibold">Dokumenty</h2>
+
+                    <div class="flex items-center gap-2">
+                        <form method="POST" action="{{ route('orders.documents.store', $order) }}">
+                            @csrf
+                            <input type="hidden" name="type" value="invoice">
+                            <button type="submit" class="rounded border border-[#3a3a3a] text-[#EDEDEC] px-3 py-1.5 text-sm hover:bg-[#2a2a2a] transition-colors">
+                                Vytvoriť faktúru
+                            </button>
+                        </form>
+
+                        <form method="POST" action="{{ route('orders.documents.store', $order) }}">
+                            @csrf
+                            <input type="hidden" name="type" value="delivery_note">
+                            <button type="submit" class="rounded border border-[#3a3a3a] text-[#EDEDEC] px-3 py-1.5 text-sm hover:bg-[#2a2a2a] transition-colors">
+                                Vytvoriť dodací list
+                            </button>
+                        </form>
+
+                        <form method="POST" action="{{ route('orders.documents.store', $order) }}">
+                            @csrf
+                            <input type="hidden" name="type" value="quote">
+                            <button type="submit" class="rounded border border-[#3a3a3a] text-[#EDEDEC] px-3 py-1.5 text-sm hover:bg-[#2a2a2a] transition-colors">
+                                Vytvoriť cenovú ponuku
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <table class="w-full text-sm text-left text-[#EDEDEC]">
+                    <thead class="bg-[#141414] text-xs uppercase opacity-70">
+                        <tr>
+                            <th class="px-4 py-3">Číslo dokumentu</th>
+                            <th class="px-4 py-3">Typ</th>
+                            <th class="px-4 py-3">Dátum</th>
+                            <th class="px-4 py-3 text-right">Akcie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($order->documents as $document)
+                            <tr class="border-t border-[#2e2e2e]">
+                                <td class="px-4 py-3 font-medium">{{ $document->document_number }}</td>
+                                <td class="px-4 py-3">{{ $document->type->label() }}</td>
+                                <td class="px-4 py-3 opacity-70">{{ $document->issued_at->format('d.m.Y') }}</td>
+                                <td class="px-4 py-3 text-right">
+                                    <a href="{{ route('documents.show', $document) }}" target="_blank" class="text-[#d7e600] hover:underline">Stiahnuť PDF</a>
+
+                                    <form method="POST" action="{{ route('documents.destroy', $document) }}" class="inline" onsubmit="return confirm('Naozaj chcete odstrániť tento dokument?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="ml-3 text-red-400 hover:underline">Zmazať</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-4 py-6 text-center opacity-70">Zatiaľ žiadne dokumenty.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
             <div class="rounded-lg border border-[#2e2e2e] bg-[#1c1c1c] overflow-hidden">
                 <h2 class="text-lg font-semibold px-4 pt-4">História stavov</h2>
 

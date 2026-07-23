@@ -51,6 +51,7 @@
                         </td>
                         <td class="px-4 py-3 text-right">
                             <a href="{{ route('products.edit', $product) }}" class="text-[#d7e600] hover:underline">Upraviť</a>
+                            <a href="{{ route('products.label', $product) }}" target="_blank" class="ml-3 text-[#EDEDEC] opacity-70 hover:opacity-100 hover:underline">Štítok</a>
 
                             <form method="POST" action="{{ route('products.destroy', $product) }}" class="inline" onsubmit="return confirm('Naozaj chcete odstrániť tento produkt?');">
                                 @csrf
