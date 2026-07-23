@@ -5,10 +5,15 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+/.ai
+/.claude
 /.codex
 /.cursor/
 /.idea
+/.junie
+/.mcp.json
 /.nova
+/.npmrc
 /.phpunit.cache
 /.vscode
 /.zed
