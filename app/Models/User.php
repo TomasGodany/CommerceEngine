@@ -8,6 +8,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -34,6 +35,14 @@ class User extends Authenticatable
             'two_factor_secret' => 'encrypted',
             'two_factor_enabled_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the customer record linked to this user.
+     */
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
     }
 
     /**

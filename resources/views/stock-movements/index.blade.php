@@ -13,6 +13,35 @@
         </div>
     @endif
 
+    <div class="rounded-lg border border-[#2e2e2e] bg-[#1c1c1c] overflow-hidden">
+        <table class="w-full text-sm text-left text-[#EDEDEC]">
+            <thead class="bg-[#141414] text-xs uppercase opacity-70">
+                <tr>
+                    <th class="px-4 py-3">Produkt</th>
+                    <th class="px-4 py-3">Variant</th>
+                    <th class="px-4 py-3">Množstvo</th>
+                    <th class="px-4 py-3">Rezervované</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($stockItems as $stockItem)
+                    <tr class="border-t border-[#2e2e2e]">
+                        <td class="px-4 py-3 font-medium">{{ $stockItem->product?->name ?? '—' }}</td>
+                        <td class="px-4 py-3">{{ $stockItem->productVariant?->name ?? '—' }}</td>
+                        <td class="px-4 py-3">{{ $stockItem->quantity }}</td>
+                        <td class="px-4 py-3 opacity-70">{{ $stockItem->reserved_quantity }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="px-4 py-6 text-center opacity-70">Zatiaľ nie sú evidované žiadne skladové zásoby.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="text-xl font-semibold mt-10 mb-4">História po<span class="text-[#d7e600]">hybov</span></h2>
+
     <form method="GET" action="{{ route('stock-movements.index') }}" class="mb-6 flex flex-wrap items-end gap-4 bg-[#1c1c1c] border border-[#2e2e2e] rounded-lg p-4">
         <div>
             <label for="product_id" class="block text-sm mb-1">Produkt</label>
@@ -63,7 +92,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-6 text-center opacity-70">Zatiaľ neboli zaznamenané žiadne skladové zásoby.</td>
+                        <td colspan="7" class="px-4 py-6 text-center opacity-70">Zatiaľ neboli zaznamenané žiadne pohyby.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -72,34 +101,5 @@
 
     <div class="mt-4">
         {{ $movements->links() }}
-    </div>
-
-    <h2 class="text-xl font-semibold mt-10 mb-4">Aktuálne st<span class="text-[#d7e600]">avy zásob</span></h2>
-
-    <div class="rounded-lg border border-[#2e2e2e] bg-[#1c1c1c] overflow-hidden">
-        <table class="w-full text-sm text-left text-[#EDEDEC]">
-            <thead class="bg-[#141414] text-xs uppercase opacity-70">
-                <tr>
-                    <th class="px-4 py-3">Produkt</th>
-                    <th class="px-4 py-3">Variant</th>
-                    <th class="px-4 py-3">Množstvo</th>
-                    <th class="px-4 py-3">Rezervované</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($stockItems as $stockItem)
-                    <tr class="border-t border-[#2e2e2e]">
-                        <td class="px-4 py-3 font-medium">{{ $stockItem->product?->name ?? '—' }}</td>
-                        <td class="px-4 py-3">{{ $stockItem->productVariant?->name ?? '—' }}</td>
-                        <td class="px-4 py-3">{{ $stockItem->quantity }}</td>
-                        <td class="px-4 py-3 opacity-70">{{ $stockItem->reserved_quantity }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="px-4 py-6 text-center opacity-70">Zatiaľ nie sú evidované žiadne skladové zásoby.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
     </div>
 </x-layouts.app>

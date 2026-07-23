@@ -4,50 +4,59 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterCustomerRequest;
+use App\Models\Customer;
 use App\Models\User;
+use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
+    public function __construct(private readonly CartService $cartService) {}
+
     /**
      * Register a new customer account and issue an API token.
      */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterCustomerRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
+        $validated = $request->validated();
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => UserRole::Customer,
-        ]);
+        $customer = DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'name' => trim("{$validated['first_name']} {$validated['last_name']}"),
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => UserRole::Customer,
+            ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+            return Customer::create([
+                'user_id' => $user->id,
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? null,
+            ]);
+        });
+
+        $token = $customer->user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'customer' => $customer,
             'token' => $token,
         ], 201);
     }
 
     /**
-     * Authenticate the user and issue an API token.
+     * Authenticate the customer and issue an API token.
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
-        ]);
+        $credentials = $request->validated();
 
         if (! Auth::attempt($credentials)) {
             return response()->json([
@@ -64,6 +73,10 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Váš účet je deaktivovaný.',
             ], 403);
+        }
+
+        if ($user->customer) {
+            $this->cartService->mergeGuestCartIntoCustomer($request, $user->customer);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
