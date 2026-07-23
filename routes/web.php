@@ -6,22 +6,24 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CustomerAddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EmailTemplateController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
-use App\Http\Controllers\PriceListController;
-use App\Http\Controllers\PriceListItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductLabelController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\TaxRateController;
 use App\Http\Controllers\TwoFactorChallengeController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
@@ -50,7 +52,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('categories', CategoryController::class)->except(['show']);
         Route::resource('brands', BrandController::class)->except(['show']);
-        Route::resource('warehouses', WarehouseController::class)->except(['show']);
         Route::resource('stock-movements', StockMovementController::class)->only(['index', 'create', 'store']);
 
         Route::resource('orders', OrderController::class);
@@ -59,10 +60,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('customers', CustomerController::class);
         Route::post('customers/{customer}/addresses', [CustomerAddressController::class, 'store'])->name('customers.addresses.store');
         Route::delete('customer-addresses/{customerAddress}', [CustomerAddressController::class, 'destroy'])->name('customer-addresses.destroy');
-
-        Route::resource('price-lists', PriceListController::class);
-        Route::post('price-lists/{priceList}/items', [PriceListItemController::class, 'store'])->name('price-lists.items.store');
-        Route::delete('price-list-items/{priceListItem}', [PriceListItemController::class, 'destroy'])->name('price-list-items.destroy');
 
         Route::resource('discounts', DiscountController::class)->except(['show']);
         Route::resource('coupons', CouponController::class)->except(['show']);
@@ -80,5 +77,13 @@ Route::middleware('auth')->group(function () {
         Route::get('api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
         Route::post('api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
         Route::delete('api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');
+
+        Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+
+        Route::resource('currencies', CurrencyController::class)->except(['show']);
+        Route::resource('languages', LanguageController::class)->except(['show']);
+        Route::resource('tax-rates', TaxRateController::class)->except(['show']);
+        Route::resource('email-templates', EmailTemplateController::class)->except(['show']);
     });
 });

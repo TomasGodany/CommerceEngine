@@ -2,64 +2,75 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreLanguageRequest;
+use App\Http\Requests\UpdateLanguageRequest;
 use App\Models\Language;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LanguageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the languages.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('languages.index', [
+            'languages' => Language::orderBy('code')->paginate(15),
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new language.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('languages.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created language in storage.
      */
-    public function store(Request $request)
+    public function store(StoreLanguageRequest $request): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+        $validated['is_default'] = $request->boolean('is_default');
+
+        Language::create($validated);
+
+        return redirect()->route('languages.index')->with('status', 'Jazyk bol úspešne vytvorený.');
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified language.
      */
-    public function show(Language $language)
+    public function edit(Language $language): View
     {
-        //
+        return view('languages.edit', [
+            'language' => $language,
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified language in storage.
      */
-    public function edit(Language $language)
+    public function update(UpdateLanguageRequest $request, Language $language): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+        $validated['is_default'] = $request->boolean('is_default');
+
+        $language->update($validated);
+
+        return redirect()->route('languages.index')->with('status', 'Jazyk bol úspešne upravený.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove the specified language from storage.
      */
-    public function update(Request $request, Language $language)
+    public function destroy(Language $language): RedirectResponse
     {
-        //
-    }
+        $language->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Language $language)
-    {
-        //
+        return redirect()->route('languages.index')->with('status', 'Jazyk bol úspešne odstránený.');
     }
 }

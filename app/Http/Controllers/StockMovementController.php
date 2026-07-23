@@ -20,21 +20,19 @@ class StockMovementController extends Controller
     public function index(Request $request): View
     {
         $movements = StockMovement::query()
-            ->with(['warehouse', 'product', 'productVariant', 'user'])
-            ->when($request->filled('warehouse_id'), fn ($query) => $query->where('warehouse_id', $request->integer('warehouse_id')))
+            ->with(['product', 'productVariant', 'user'])
             ->when($request->filled('product_id'), fn ($query) => $query->where('product_id', $request->integer('product_id')))
             ->latest()
             ->paginate(15)
             ->withQueryString();
 
-        $stockItems = StockItem::with(['warehouse', 'product', 'productVariant'])
-            ->orderBy('warehouse_id')
+        $stockItems = StockItem::with(['product', 'productVariant'])
+            ->orderBy('product_id')
             ->get();
 
         return view('stock-movements.index', [
             'movements' => $movements,
             'stockItems' => $stockItems,
-            'warehouses' => Warehouse::orderBy('name')->get(),
             'products' => Product::orderBy('name')->get(),
         ]);
     }
@@ -45,7 +43,6 @@ class StockMovementController extends Controller
     public function create(): View
     {
         return view('stock-movements.create', [
-            'warehouses' => Warehouse::orderBy('name')->get(),
             'products' => Product::with('variants')->orderBy('name')->get(),
         ]);
     }
@@ -57,6 +54,7 @@ class StockMovementController extends Controller
     {
         $validated = $request->validated();
         $validated['product_variant_id'] = $validated['product_variant_id'] ?? null;
+        $validated['warehouse_id'] = Warehouse::query()->value('id');
 
         $stockItem = StockItem::firstOrNew([
             'warehouse_id' => $validated['warehouse_id'],

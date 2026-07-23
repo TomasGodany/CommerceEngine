@@ -40,8 +40,8 @@
                 </td>
                 <td style="width: 50%; vertical-align: top; text-align: right;">
                     <strong>Platobné údaje</strong><br>
-                    IBAN: {{ config('company.iban') }}<br>
-                    BIC: {{ config('company.bic') }}<br>
+                    IBAN: {{ $setting->iban }}<br>
+                    BIC: {{ $setting->bic }}<br>
                     Variabilný symbol: {{ $order->order_number }}<br>
                     Suma na úhradu: {{ number_format($data['total_amount'], 2) }} {{ $data['currency'] }}
                 </td>
@@ -78,7 +78,7 @@
                 <td style="width: 70%; vertical-align: top;"></td>
                 <td style="width: 30%; text-align: center;">
                     {!! QrCode::size(140)->generate(
-                        'SPD*1.0*ACC:'.config('company.iban').'*AM:'.number_format($data['total_amount'], 2, '.', '').'*CC:'.$data['currency'].'*X-VS:'.preg_replace('/\D/', '', $order->order_number)
+                        'SPD*1.0*ACC:'.$setting->iban.'*AM:'.number_format($data['total_amount'], 2, '.', '').'*CC:'.$data['currency'].'*X-VS:'.preg_replace('/\D/', '', $order->order_number)
                     ) !!}
                     <div style="font-size: 10px; margin-top: 4px;">QR platba</div>
                 </td>

@@ -1,13 +1,15 @@
 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
     <tr>
         <td style="width: 50%; vertical-align: top;">
-            <div style="font-size: 18px; font-weight: bold;">{{ config('company.name') }}</div>
-            <div>{{ config('company.street') }}</div>
-            <div>{{ config('company.city') }}</div>
-            <div>{{ config('company.country') }}</div>
-            <div>IČO: {{ config('company.ico') }}</div>
-            <div>DIČ: {{ config('company.dic') }}</div>
-            <div>IČ DPH: {{ config('company.ic_dph') }}</div>
+            <div style="font-size: 18px; font-weight: bold;">{{ $setting->company_name }}</div>
+            <div>{{ $setting->company_street }}</div>
+            <div>{{ $setting->company_city }}</div>
+            <div>{{ $setting->company_country }}</div>
+            <div>IČO: {{ $setting->ico }}</div>
+            <div>DIČ: {{ $setting->dic }}</div>
+            @if ($setting->ic_dph)
+                <div>IČ DPH: {{ $setting->ic_dph }}</div>
+            @endif
         </td>
         <td style="width: 50%; vertical-align: top; text-align: right;">
             <div style="font-size: 22px; font-weight: bold;">{{ $title }}</div>

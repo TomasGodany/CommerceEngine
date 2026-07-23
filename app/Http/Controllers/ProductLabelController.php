@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Setting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,6 +16,7 @@ class ProductLabelController extends Controller
     {
         $pdf = Pdf::loadView('documents.pdf.product-label', [
             'product' => $product,
+            'setting' => Setting::current(),
         ])->setPaper([0, 0, 226, 340]);
 
         return $pdf->download('stitok-'.$product->sku.'.pdf');

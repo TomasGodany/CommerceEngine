@@ -8,8 +8,8 @@ use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\StockItem;
 use App\Models\User;
-use App\Models\Warehouse;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -24,7 +24,7 @@ class DashboardController extends Controller
             'categoriesCount' => Category::count(),
             'brandsCount' => Brand::count(),
             'usersCount' => User::count(),
-            'warehousesCount' => Warehouse::count(),
+            'stockItemsCount' => StockItem::count(),
             'ordersCount' => Order::count(),
             'customersCount' => Customer::count(),
             'couponsCount' => Coupon::count(),

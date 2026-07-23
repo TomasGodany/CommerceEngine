@@ -2,64 +2,75 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCurrencyRequest;
+use App\Http\Requests\UpdateCurrencyRequest;
 use App\Models\Currency;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CurrencyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the currencies.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('currencies.index', [
+            'currencies' => Currency::orderBy('code')->paginate(15),
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new currency.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('currencies.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created currency in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCurrencyRequest $request): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+        $validated['is_default'] = $request->boolean('is_default');
+
+        Currency::create($validated);
+
+        return redirect()->route('currencies.index')->with('status', 'Mena bola úspešne vytvorená.');
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified currency.
      */
-    public function show(Currency $currency)
+    public function edit(Currency $currency): View
     {
-        //
+        return view('currencies.edit', [
+            'currency' => $currency,
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified currency in storage.
      */
-    public function edit(Currency $currency)
+    public function update(UpdateCurrencyRequest $request, Currency $currency): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+        $validated['is_default'] = $request->boolean('is_default');
+
+        $currency->update($validated);
+
+        return redirect()->route('currencies.index')->with('status', 'Mena bola úspešne upravená.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove the specified currency from storage.
      */
-    public function update(Request $request, Currency $currency)
+    public function destroy(Currency $currency): RedirectResponse
     {
-        //
-    }
+        $currency->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Currency $currency)
-    {
-        //
+        return redirect()->route('currencies.index')->with('status', 'Mena bola úspešne odstránená.');
     }
 }

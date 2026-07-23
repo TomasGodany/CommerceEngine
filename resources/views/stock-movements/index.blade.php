@@ -1,6 +1,6 @@
-<x-layouts.app title="Skladové pohyby – Commerce Engine">
+<x-layouts.app title="Skladové zásoby – Commerce Engine">
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Skladové po<span class="text-[#d7e600]">hyby</span></h1>
+        <h1 class="text-2xl font-semibold">Skladové z<span class="text-[#d7e600]">ásoby</span></h1>
 
         <a href="{{ route('stock-movements.create') }}" class="rounded bg-[#d7e600] text-[#1c1c1c] font-medium px-4 py-2 hover:bg-[#c3d000] transition-colors">
             + Nový pohyb
@@ -14,19 +14,6 @@
     @endif
 
     <form method="GET" action="{{ route('stock-movements.index') }}" class="mb-6 flex flex-wrap items-end gap-4 bg-[#1c1c1c] border border-[#2e2e2e] rounded-lg p-4">
-        <div>
-            <label for="warehouse_id" class="block text-sm mb-1">Sklad</label>
-            <select id="warehouse_id" name="warehouse_id"
-                class="rounded border border-[#3a3a3a] bg-[#141414] text-[#EDEDEC] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#d7e600]">
-                <option value="">— všetky —</option>
-                @foreach ($warehouses as $warehouse)
-                    <option value="{{ $warehouse->id }}" @selected(request('warehouse_id') == $warehouse->id)>
-                        {{ $warehouse->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
         <div>
             <label for="product_id" class="block text-sm mb-1">Produkt</label>
             <select id="product_id" name="product_id"
@@ -53,7 +40,6 @@
             <thead class="bg-[#141414] text-xs uppercase opacity-70">
                 <tr>
                     <th class="px-4 py-3">Dátum</th>
-                    <th class="px-4 py-3">Sklad</th>
                     <th class="px-4 py-3">Produkt</th>
                     <th class="px-4 py-3">Variant</th>
                     <th class="px-4 py-3">Typ</th>
@@ -66,7 +52,6 @@
                 @forelse ($movements as $movement)
                     <tr class="border-t border-[#2e2e2e]">
                         <td class="px-4 py-3 opacity-70">{{ $movement->created_at->format('d.m.Y H:i') }}</td>
-                        <td class="px-4 py-3">{{ $movement->warehouse?->name ?? '—' }}</td>
                         <td class="px-4 py-3 font-medium">{{ $movement->product?->name ?? '—' }}</td>
                         <td class="px-4 py-3">{{ $movement->productVariant?->name ?? '—' }}</td>
                         <td class="px-4 py-3">
@@ -78,7 +63,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-6 text-center opacity-70">Zatiaľ neboli zaznamenané žiadne skladové pohyby.</td>
+                        <td colspan="7" class="px-4 py-6 text-center opacity-70">Zatiaľ neboli zaznamenané žiadne skladové zásoby.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -95,7 +80,6 @@
         <table class="w-full text-sm text-left text-[#EDEDEC]">
             <thead class="bg-[#141414] text-xs uppercase opacity-70">
                 <tr>
-                    <th class="px-4 py-3">Sklad</th>
                     <th class="px-4 py-3">Produkt</th>
                     <th class="px-4 py-3">Variant</th>
                     <th class="px-4 py-3">Množstvo</th>
@@ -105,7 +89,6 @@
             <tbody>
                 @forelse ($stockItems as $stockItem)
                     <tr class="border-t border-[#2e2e2e]">
-                        <td class="px-4 py-3">{{ $stockItem->warehouse?->name ?? '—' }}</td>
                         <td class="px-4 py-3 font-medium">{{ $stockItem->product?->name ?? '—' }}</td>
                         <td class="px-4 py-3">{{ $stockItem->productVariant?->name ?? '—' }}</td>
                         <td class="px-4 py-3">{{ $stockItem->quantity }}</td>
@@ -113,7 +96,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-6 text-center opacity-70">Zatiaľ nie sú evidované žiadne skladové zásoby.</td>
+                        <td colspan="4" class="px-4 py-6 text-center opacity-70">Zatiaľ nie sú evidované žiadne skladové zásoby.</td>
                     </tr>
                 @endforelse
             </tbody>

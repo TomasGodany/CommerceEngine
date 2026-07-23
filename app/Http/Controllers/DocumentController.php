@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\DocumentType;
 use App\Models\Document;
 use App\Models\Order;
+use App\Models\Setting;
 use App\Services\DocumentNumberGenerator;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -100,6 +101,7 @@ class DocumentController extends Controller
             'document' => $document,
             'order' => $order,
             'data' => $data,
+            'setting' => Setting::current(),
         ]);
 
         $filePath = 'documents/'.$document->document_number.'.pdf';
@@ -126,6 +128,7 @@ class DocumentController extends Controller
             'document' => $document,
             'order' => $document->order,
             'data' => $document->data,
+            'setting' => Setting::current(),
         ]);
 
         return $pdf->stream($document->document_number.'.pdf');

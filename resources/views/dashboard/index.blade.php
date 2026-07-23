@@ -29,9 +29,9 @@
             </div>
         @endif
 
-        <a href="{{ route('warehouses.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
-            <p class="text-sm opacity-70">Sklady</p>
-            <p class="text-2xl font-semibold">{{ $warehousesCount }}</p>
+        <a href="{{ route('stock-movements.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
+            <p class="text-sm opacity-70">Skladové zásoby</p>
+            <p class="text-2xl font-semibold">{{ $stockItemsCount }}</p>
         </a>
 
         <a href="{{ route('orders.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">

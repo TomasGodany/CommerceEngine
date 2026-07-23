@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\DiscountType;
 use App\Models\Coupon;
 use App\Models\Discount;
-use App\Models\PriceList;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,41 +18,7 @@ class PricingSeeder extends Seeder
      */
     public function run(): void
     {
-        $retailPriceList = PriceList::firstOrCreate(
-            ['code' => 'PL-RETAIL'],
-            [
-                'name' => 'Maloobchod',
-                'description' => 'Základný cenník pre bežných koncových zákazníkov.',
-                'is_default' => true,
-                'is_active' => true,
-            ]
-        );
-
-        $wholesalePriceList = PriceList::firstOrCreate(
-            ['code' => 'PL-B2B'],
-            [
-                'name' => 'Veľkoobchod B2B',
-                'description' => 'Zvýhodnený cenník pre firemných zákazníkov s množstevnými zľavami.',
-                'is_default' => false,
-                'is_active' => true,
-            ]
-        );
-
         $products = Product::all();
-
-        foreach ($products as $product) {
-            $retailPrice = (float) $product->price;
-
-            $retailPriceList->items()->firstOrCreate(
-                ['product_id' => $product->id],
-                ['price' => $retailPrice]
-            );
-
-            $wholesalePriceList->items()->firstOrCreate(
-                ['product_id' => $product->id],
-                ['price' => round($retailPrice * 0.85, 2)]
-            );
-        }
 
         $firstProduct = $products->first();
         $firstCategory = $firstProduct?->category;
