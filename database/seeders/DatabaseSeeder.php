@@ -23,5 +23,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(ProductCatalogSeeder::class);
+        $this->call(WarehouseSeeder::class);
+        $this->call(CustomerSeeder::class);
+        $this->call(OrderSeeder::class);
+        $this->call(PricingSeeder::class);
     }
 }

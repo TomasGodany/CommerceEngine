@@ -21,5 +21,25 @@
             <p class="text-sm opacity-70">Používatelia</p>
             <p class="text-2xl font-semibold">{{ $usersCount }}</p>
         </div>
+
+        <a href="{{ route('warehouses.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
+            <p class="text-sm opacity-70">Sklady</p>
+            <p class="text-2xl font-semibold">{{ $warehousesCount }}</p>
+        </a>
+
+        <a href="{{ route('orders.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
+            <p class="text-sm opacity-70">Objednávky</p>
+            <p class="text-2xl font-semibold">{{ $ordersCount }}</p>
+        </a>
+
+        <a href="{{ route('customers.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
+            <p class="text-sm opacity-70">Zákazníci</p>
+            <p class="text-2xl font-semibold">{{ $customersCount }}</p>
+        </a>
+
+        <a href="{{ route('coupons.index') }}" class="p-4 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] text-[#EDEDEC] border-l-4 border-l-[#d7e600] hover:bg-[#242424] transition-colors">
+            <p class="text-sm opacity-70">Kupóny</p>
+            <p class="text-2xl font-semibold">{{ $couponsCount }}</p>
+        </a>
     </div>
 </x-layouts.app>
