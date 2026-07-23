@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@commerce-engine.test',
             'password' => Hash::make('password'),
         ]);
+
+        $this->call(ProductCatalogSeeder::class);
     }
 }

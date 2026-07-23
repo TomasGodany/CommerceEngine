@@ -6,6 +6,9 @@
 
         <title>{{ $title ?? config('app.name', 'Commerce Engine') }}</title>
 
+        <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+
         @fonts
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,7 +20,10 @@
                     Commerce <span class="text-[#d7e600]">Engine</span>
                 </a>
 
-                <div class="flex items-center gap-4 text-sm text-[#EDEDEC]">
+                <div class="flex items-center gap-6 text-sm text-[#EDEDEC]">
+                    <a href="{{ route('dashboard') }}" class="hover:text-[#d7e600] transition-colors">Dashboard</a>
+                    <a href="{{ route('products.index') }}" class="hover:text-[#d7e600] transition-colors">Produkty</a>
+
                     <span>{{ auth()->user()->name }} <span class="text-[#d7e600]">({{ auth()->user()->role->value }})</span></span>
 
                     <form method="POST" action="{{ route('logout') }}">

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable([
     'category_id',
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'short_description',
     'price',
     'sale_price',
+    'image_path',
     'seo_title',
     'seo_description',
     'is_active',
@@ -64,5 +66,13 @@ class Product extends Model
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    /**
+     * Get the public URL of the product's image.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image_path ? Storage::disk('public')->url($this->image_path) : null;
     }
 }

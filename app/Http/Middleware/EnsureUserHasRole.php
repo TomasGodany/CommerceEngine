@@ -19,15 +19,27 @@ class EnsureUserHasRole
         $user = $request->user();
 
         if (! $user || ! $user->is_active) {
-            return response()->json(['message' => 'Nemáte oprávnenie na vykonanie tejto akcie.'], 403);
+            return $this->deny($request);
         }
 
         $allowedRoles = array_map(fn (string $role) => UserRole::from($role), $roles);
 
         if (! empty($allowedRoles) && ! in_array($user->role, $allowedRoles, true)) {
-            return response()->json(['message' => 'Nemáte oprávnenie na vykonanie tejto akcie.'], 403);
+            return $this->deny($request);
         }
 
         return $next($request);
+    }
+
+    /**
+     * Build the response for a denied request.
+     */
+    private function deny(Request $request): Response
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Nemáte oprávnenie na vykonanie tejto akcie.'], 403);
+        }
+
+        abort(403, 'Nemáte oprávnenie na vykonanie tejto akcie.');
     }
 }
