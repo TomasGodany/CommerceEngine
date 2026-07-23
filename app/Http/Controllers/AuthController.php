@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -48,7 +49,23 @@ class AuthController extends Controller
             ])->onlyInput('email');
         }
 
+        if ($user->hasTwoFactorEnabled()) {
+            Auth::logout();
+
+            $request->session()->put('2fa_user_id', $user->id);
+
+            return redirect()->route('two-factor.challenge');
+        }
+
         $request->session()->regenerate();
+
+        AuditLog::create([
+            'user_id' => $user->id,
+            'action' => 'login',
+            'auditable_type' => User::class,
+            'auditable_id' => $user->id,
+            'changes' => null,
+        ]);
 
         return redirect()->intended(route('dashboard'));
     }

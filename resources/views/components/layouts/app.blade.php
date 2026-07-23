@@ -39,6 +39,8 @@
 
                     <span>{{ auth()->user()->name }} <span class="text-[#d7e600]">({{ auth()->user()->role->value }})</span></span>
 
+                    <a href="{{ route('two-factor.show') }}" class="hover:text-[#d7e600] transition-colors">2FA</a>
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="rounded bg-[#d7e600] text-[#1c1c1c] font-medium px-3 py-1.5 hover:bg-[#c3d000] transition-colors">
